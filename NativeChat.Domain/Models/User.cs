@@ -40,7 +40,4 @@ public partial class User
 
     [InverseProperty("User")]
     public virtual ICollection<Bot> Bots { get; set; } = new List<Bot>();
-
-    [InverseProperty("User")]
-    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 }

@@ -11,7 +11,7 @@ public class ValidationService : IValidationService
         _db = db;
     }
 
-    public async Task<bool> IsEmailTaken(string email)
+    public async Task<bool> IsEmailTakenAsync(string email)
     {
         return await _db.Users.AnyAsync(u => u.Email == email.ToLower());
     }
@@ -20,5 +20,15 @@ public class ValidationService : IValidationService
     {
         var password = Encryptor.GetHashed(user.Password);
         return await _db.Users.AnyAsync(u => u.Email.ToLower() == user.Email.ToLower() && u.Password == password);
+    }
+
+    public async Task<bool> IsUserExistsAsync(Guid userId)
+    {
+        return await _db.Users.AnyAsync(u => u.Id == userId);
+    }
+
+    public async Task<bool> IsBotExistsAsync(Guid botId)
+    {
+        return await _db.Bots.AnyAsync(b => b.Id == botId);
     }
 }

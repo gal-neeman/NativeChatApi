@@ -52,14 +52,6 @@ public partial class NativeChatContext : DbContext
         modelBuilder.Entity<Message>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
-
-            entity.HasOne(d => d.Bot).WithMany(p => p.Messages)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_messages_bots");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Messages)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_messages_users");
         });
 
         modelBuilder.Entity<User>(entity =>

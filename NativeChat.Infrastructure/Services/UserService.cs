@@ -18,7 +18,7 @@ public class UserService : IUserService
 
     public async Task<string?> RegisterAsync(RegisterDto registerDto)
     {
-        if (await _validationService.IsEmailTaken(registerDto.Email.ToLower()))
+        if (await _validationService.IsEmailTakenAsync(registerDto.Email.ToLower()))
             return null;
 
         var user = _mapper.Map<User>(registerDto);

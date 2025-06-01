@@ -42,13 +42,31 @@ public static class BuilderExtensions
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IValidationService, ValidationService>();
+        services.AddScoped<IBotService, BotService>();
+        services.AddScoped<IMessagesService, MessageService>();
 
         services.AddScoped<IUserDao, UserDao>();
+        services.AddScoped<IBotDao, BotDao>();
+        services.AddScoped<IMessageDao, MessageDao>();
     }
 
     public static void AddUtilityServices(this IServiceCollection services)
     {
         services.AddSingleton<ITokenService, TokenService>();
         services.AddAutoMapper(typeof(MappingProfile));
+    }
+
+    public static void AddCorsPolicies(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll",
+                policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+        });
     }
 }

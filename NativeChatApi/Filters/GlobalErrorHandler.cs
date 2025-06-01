@@ -8,13 +8,12 @@ public class GlobalErrorHandler : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
-        InternalServerError<string> error = new InternalServerError<string>(context.Exception.Message);
-        JsonResult result = new JsonResult(error);
+        var error = new InternalServerError<string>(context.Exception.Message);
+        var result = new JsonResult(error);
         result.StatusCode = StatusCodes.Status500InternalServerError;
         context.Result = result;
         context.ExceptionHandled = true;
 
-        // Log to serilog full error details for development debugging
         Log.Error("ERROR - Internal Server Error: '" + context.Exception + "'");
     }
 }

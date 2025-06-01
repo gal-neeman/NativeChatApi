@@ -19,6 +19,7 @@ public class Program
         // Add global filters
         builder.Services.AddMvc(options => {
             options.Filters.Add<GlobalErrorHandler>();
+            options.Filters.Add<ExtractUserIdFilter>();
         });
 
         builder.Services.AddOptionsServices(builder);
@@ -26,6 +27,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddDbServices();
         builder.Services.AddUtilityServices();
+        builder.Services.AddCorsPolicies();
 
         builder.Services.AddValidatorsFromAssemblyContaining<CredentialsValidator>();
         builder.Services.AddFluentValidationAutoValidation();
@@ -33,14 +35,12 @@ public class Program
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-
         app.UseHttpsRedirection();
-
+        app.UseCors("AllowAll");
         app.UseAuthorization();
         app.UseSerilogRequestLogging();
 
         app.MapControllers();
-
         app.Run();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace NativeChat;
 
@@ -10,23 +11,15 @@ public partial class Message
     [Column("id")]
     public Guid Id { get; set; }
 
-    [Column("user_id")]
-    public Guid UserId { get; set; }
+    [Column("receiver_id")]
+    public Guid ReceiverId { get; set; }
 
-    [Column("bot_id")]
-    public Guid BotId { get; set; }
-
+    [Column("sender_id")]
+    public Guid SenderId { get; set; }
+    
     [Column("content", TypeName = "text")]
     public string Content { get; set; } = null!;
 
     [Column("created_at")]
-    public DateOnly CreatedAt { get; set; }
-
-    [ForeignKey("BotId")]
-    [InverseProperty("Messages")]
-    public virtual Bot Bot { get; set; } = null!;
-
-    [ForeignKey("UserId")]
-    [InverseProperty("Messages")]
-    public virtual User User { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
 }

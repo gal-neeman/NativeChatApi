@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace NativeChat;
 
@@ -12,12 +13,13 @@ public partial class Language
 
     [Column("language")]
     [StringLength(50)]
-    public string Language1 { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     [Column("language_native")]
     [StringLength(50)]
-    public string LanguageNative { get; set; } = null!;
+    public string NativeName { get; set; } = null!;
 
     [InverseProperty("Language")]
+    [JsonIgnore]
     public virtual ICollection<Bot> Bots { get; set; } = new List<Bot>();
 }
