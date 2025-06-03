@@ -34,7 +34,7 @@ public class MessagesController : ControllerBase
             return Unauthorized();
         Guid guid = Guid.Parse(userId);
 
-        Message? dbMessage = await _messageService.SendMessageAsync(guid, message!);
+        MessageDto? dbMessage = await _messageService.SendMessageAsync(guid, message!);
 
         if (dbMessage == null)
             return BadRequest();

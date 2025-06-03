@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenAI.Chat;
 
 namespace NativeChat;
 
@@ -33,7 +35,30 @@ public static class BuilderExtensions
             .Configure<AuthSettings>(
                 builder.Configuration.GetSection(nameof(AuthSettings)))
             .Configure<DatabaseSettings>(
-                builder.Configuration.GetSection(nameof(DatabaseSettings)));
+                builder.Configuration.GetSection(nameof(DatabaseSettings)))
+            .Configure<OpenAISettings>(
+                builder.Configuration.GetSection(nameof(OpenAISettings)));
+    }
+
+    public static void AddOpenAIServices(this IServiceCollection services, WebApplicationBuilder builder)
+    {
+        // Load openai settings
+        var settings = builder.Configuration.GetSection(nameof(OpenAISettings));
+        string chatModel = settings.GetValue<string>("Model")!;
+        string contextPrompt = settings.GetValue<string>("ContextPrompt")!;
+
+        // Load api key
+        var envVariables = DotEnv.Read(options: new DotEnvOptions(envFilePaths: new[] { @"C:\Projects\NativeChatApi\NativeChatApi\.env" }));
+        var key = envVariables["apikey"];
+
+        // Set up client
+        ChatClient client = new(model: chatModel, apiKey: key);
+
+        // Register singleton
+        services.AddSingleton<ChatClient>(client);
+
+        // Register custom services
+        services.AddScoped<IChatService, ChatService>();
     }
 
     public static void AddDbServices(this IServiceCollection services)

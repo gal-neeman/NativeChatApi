@@ -23,6 +23,7 @@ public class Program
         });
 
         builder.Services.AddOptionsServices(builder);
+        builder.Services.AddOpenAIServices(builder);
         builder.Services.AddJwt(builder);
         builder.Services.AddControllers();
         builder.Services.AddDbServices();
@@ -35,8 +36,9 @@ public class Program
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        app.UseHttpsRedirection();
         app.UseCors("AllowAll");
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.UseSerilogRequestLogging();
 

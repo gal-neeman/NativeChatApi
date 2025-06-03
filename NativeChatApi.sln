@@ -3,15 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeChat.API", "NativeChatApi\NativeChat.API.csproj", "{EA7A2013-5A22-4D09-AD77-1E3DFE51A758}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NativeChat.API", "NativeChatApi\NativeChat.API.csproj", "{EA7A2013-5A22-4D09-AD77-1E3DFE51A758}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeChat.Application", "NativeChat.Application\NativeChat.Application.csproj", "{E7550415-18EA-46A1-AC74-5059E8ADC15C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NativeChat.Application", "NativeChat.Application\NativeChat.Application.csproj", "{E7550415-18EA-46A1-AC74-5059E8ADC15C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeChat.Domain", "NativeChat.Domain\NativeChat.Domain.csproj", "{92B0B10D-6997-4EF3-8DD8-1BA7F3708343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NativeChat.Domain", "NativeChat.Domain\NativeChat.Domain.csproj", "{92B0B10D-6997-4EF3-8DD8-1BA7F3708343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeChat.Infrastructure", "NativeChat.Infrastructure\NativeChat.Infrastructure.csproj", "{DA249963-28E4-4AEE-9DB0-908C306F6DD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NativeChat.Infrastructure", "NativeChat.Infrastructure\NativeChat.Infrastructure.csproj", "{DA249963-28E4-4AEE-9DB0-908C306F6DD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeChat.Shared", "NativeChat.Shared\NativeChat.Shared.csproj", "{E5BD1918-7BA6-4459-87D8-41E3CFF0BE65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NativeChat.Shared", "NativeChat.Shared\NativeChat.Shared.csproj", "{E5BD1918-7BA6-4459-87D8-41E3CFF0BE65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FEF608C7-83B7-4142-9825-AE5EF34A3D75}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

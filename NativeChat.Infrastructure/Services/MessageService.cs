@@ -1,14 +1,18 @@
-﻿namespace NativeChat;
+﻿using OpenAI.Chat;
+
+namespace NativeChat;
 
 public class MessageService : IMessagesService
 {
     private readonly IMessageDao _messageDao;
     private readonly IValidationService _validationService;
+    private readonly IChatService _chatService;
 
-    public MessageService(IMessageDao messageDao, IValidationService validationService)
+    public MessageService(IMessageDao messageDao, IValidationService validationService, IChatService chatService)
     {
         _messageDao = messageDao;
         _validationService = validationService;
+        _chatService = chatService;
     }
 
     public async Task<List<Message>> GetAllMessages(Guid botId, Guid userId)
@@ -16,7 +20,7 @@ public class MessageService : IMessagesService
         return await _messageDao.GetAllMessages(botId, userId);
     }
 
-    public async Task<Message?> SendMessageAsync(Guid userId, Message message)
+    public async Task<MessageDto?> SendMessageAsync(Guid userId, Message message)
     {
         if (userId != message.SenderId && userId != message.ReceiverId)
             return null;
@@ -29,6 +33,14 @@ public class MessageService : IMessagesService
 
         await _messageDao.SendMessageAsync(message);
 
-        return message;
+        Message responseMessage = await _chatService.CompleteChatAsync(message);
+
+        MessageDto messageDto = new MessageDto
+        {
+            receivedMessage = message,
+            responseMessage = responseMessage
+        };
+
+        return messageDto;
     }
 }

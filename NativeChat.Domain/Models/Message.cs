@@ -17,7 +17,7 @@ public partial class Message
     [Column("sender_id")]
     public Guid SenderId { get; set; }
     
-    [Column("content", TypeName = "text")]
+    [Column("content", TypeName = "nvarchar(max)")]
     public string Content { get; set; } = null!;
 
     [Column("created_at")]
