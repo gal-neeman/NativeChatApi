@@ -10,22 +10,15 @@ namespace NativeChat.Controllers
         private List<WebSocket> _connections = new List<WebSocket>();
 
         [Route("/api/v1/ws")]
-        public async Task Get()
+        public async Task Get([FromQuery] string token)
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                string? userId = HttpContext.Items["UserId"] as string;
-                var user = HttpContext.User;
-                if (userId == null)
-                {
-                    HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    return;
-                }
-                Guid guid = Guid.Parse(userId);
-
+                string idStr = TokenUtils.GetIdFromToken(token);
+                Guid id = Guid.Parse(idStr);
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
                 Log.Information("Established a new WebSocket connection");
-                WebSocketManager.AddSocket(webSocket, Guid.NewGuid());
+                WebSocketManager.AddSocket(webSocket, id);
 
                 //await Task.Run(() => WebSocketManager.SendMessage(webSocket.);
             }
