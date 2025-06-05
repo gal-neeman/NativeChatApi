@@ -1,6 +1,4 @@
-﻿using OpenAI.Chat;
-
-namespace NativeChat;
+﻿namespace NativeChat;
 
 public class MessageService : IMessagesService
 {
@@ -31,9 +29,9 @@ public class MessageService : IMessagesService
 
         message.Id = Guid.NewGuid();
 
-        await _messageDao.SendMessageAsync(message);
-
         Message responseMessage = await _chatService.CompleteChatAsync(message);
+
+        await _messageDao.SendMessagesAsync([message, responseMessage]);
 
         MessageDto messageDto = new MessageDto
         {

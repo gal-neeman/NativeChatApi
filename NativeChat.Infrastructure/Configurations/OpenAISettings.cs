@@ -12,7 +12,7 @@ public class OpenAISettings
 
     public float Temperature { get; set; }
 
-    private string SystemMessage { get; set; } = null!;
+    public string SystemMessage { get; set; } = null!;
 
     public string GetSystemMessage(string language, string name)
     {

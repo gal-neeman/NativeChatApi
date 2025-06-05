@@ -25,4 +25,9 @@ public class UserDao : IUserDao
 
         return await _db.Users.SingleAsync(u => u.Email == user.Email && u.Password == password);
     }
+
+    public async Task<ICollection<User>> GetAllUsersAsync()
+    {
+        return await _db.Users.Include(u =>u.Bots).ToListAsync();
+    }
 }

@@ -37,7 +37,9 @@ public static class BuilderExtensions
             .Configure<DatabaseSettings>(
                 builder.Configuration.GetSection(nameof(DatabaseSettings)))
             .Configure<OpenAISettings>(
-                builder.Configuration.GetSection(nameof(OpenAISettings)));
+                builder.Configuration.GetSection(nameof(OpenAISettings)))
+            .Configure<UserCheckupSettings>(
+                builder.Configuration.GetSection(nameof(UserCheckupSettings)));
     }
 
     public static void AddOpenAIServices(this IServiceCollection services, WebApplicationBuilder builder)

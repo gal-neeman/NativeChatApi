@@ -5,17 +5,17 @@ namespace NativeChat;
 
 public class ChatService : IChatService
 {
-    private readonly IMessageDao _messageDao;
     private readonly ChatClient _chatClient;
     private readonly IOptions<OpenAISettings> _openAISettings;
     private readonly IBotDao _botDao;
+    private readonly IMessageDao _messageDao;
 
-    public ChatService(IMessageDao messageDao, ChatClient chatClient, IOptions<OpenAISettings> openAISettings, IBotDao botDao)
+    public ChatService(ChatClient chatClient, IOptions<OpenAISettings> openAISettings, IBotDao botDao, IMessageDao messageDao)
     {
-        _messageDao = messageDao;
         _chatClient = chatClient;
         _openAISettings = openAISettings;
         _botDao = botDao;
+        _messageDao = messageDao;
     }
 
     public async Task<Message> CompleteChatAsync(Message message)
@@ -23,6 +23,7 @@ public class ChatService : IChatService
         Bot? bot = await _botDao.GetBotByIdAsync(message.ReceiverId);
 
         List<Message> previousMessages = await _messageDao.GetAllMessages(message.ReceiverId, message.SenderId);
+        previousMessages.Add(message);
         List<ChatMessage> previousMessagesText = [ChatMessage.CreateSystemMessage(_openAISettings.Value.GetSystemMessage(bot!.Language.Name, bot!.Name))];
         Guid userId = message.SenderId;
 
@@ -55,8 +56,6 @@ public class ChatService : IChatService
                 ReceiverId = message.SenderId,
                 SenderId = message.ReceiverId
             };
-
-        await _messageDao.SendMessageAsync(responseMessage);
 
         return responseMessage;
     }

@@ -22,6 +22,8 @@ public class Program
             options.Filters.Add<ExtractUserIdFilter>();
         });
 
+        builder.Services.AddHostedService<UserCheckupService>();
+
         builder.Services.AddOptionsServices(builder);
         builder.Services.AddOpenAIServices(builder);
         builder.Services.AddJwt(builder);
