@@ -37,12 +37,17 @@ public class Program
 
         var app = builder.Build();
 
+        var webSocketOptions = new WebSocketOptions { };
+        webSocketOptions.AllowedOrigins.Add("https://localhost.com");
+
         // Configure the HTTP request pipeline.
+        app.UseRouting();
         app.UseCors("AllowAll");
-        app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseWebSockets();
         app.UseSerilogRequestLogging();
+        app.UseHttpsRedirection();
 
         app.MapControllers();
         app.Run();
