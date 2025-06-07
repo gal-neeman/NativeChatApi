@@ -7,7 +7,13 @@ namespace NativeChat.Controllers
     [ApiController]
     public class WebSocketController : ControllerBase
     {
+        private readonly IMessagesService _messagesService;
         private List<WebSocket> _connections = new List<WebSocket>();
+
+        public WebSocketController(IMessagesService messagesService)
+        {
+            _messagesService = messagesService;
+        }
 
         [Route("/api/v1/ws")]
         public async Task Get([FromQuery] string token)
@@ -20,7 +26,7 @@ namespace NativeChat.Controllers
                 Log.Information("Established a new WebSocket connection");
                 WebSocketManager.AddSocket(webSocket, id);
 
-                //await Task.Run(() => WebSocketManager.SendMessage(webSocket.);
+                await Task.Run(() => WebSocketManager.HandleSocket(webSocket, _messagesService));
             }
             else
             {
