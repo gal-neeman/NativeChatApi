@@ -25,20 +25,4 @@ public class MessagesController : ControllerBase
 
         return Ok(messages);
     }
-
-    [HttpPost]
-    public async Task<IActionResult> SendMessageAsync([FromBody] Message message)
-    {
-        string? userId = HttpContext.Items["UserId"] as string;
-        if (userId == null)
-            return Unauthorized();
-        Guid guid = Guid.Parse(userId);
-
-        MessageDto? dbMessage = await _messageService.SendMessageAsync(guid, message!);
-
-        if (dbMessage == null)
-            return BadRequest();
-
-        return Created("/", dbMessage);
-    }
 }

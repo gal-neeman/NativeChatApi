@@ -5,13 +5,18 @@ using System.Text.Json;
 
 namespace NativeChat;
 
+public static class EventNames
+{
+    public static string Message { get; set; } = "message";
+}
+
 public static class WebSocketManager
 {
     private static readonly ConcurrentDictionary<Guid, WebSocket> _sockets = new();
 
-    private static Dictionary<string, Func<dynamic, IMessagesService, Task>> _events = new Dictionary<string, Func<dynamic, IMessagesService, Task>>
+    public static Dictionary<string, Func<dynamic, IMessagesService, Task>> _events = new Dictionary<string, Func<dynamic, IMessagesService, Task>>
     {
-        ["message"] = async (message, messageService) =>
+        [EventNames.Message] = async (message, messageService) =>
         {
             Message msg = (Message)message;
             Guid userId = msg.SenderId;
@@ -24,7 +29,7 @@ public static class WebSocketManager
             EventData<MessageDto> eventData = new EventData<MessageDto>
             {
                 Data = response,
-                EventName = "message"
+                EventName = EventNames.Message
             };
             await SendMessageAsync(userId, eventData);
         }
@@ -51,6 +56,9 @@ public static class WebSocketManager
     public async static Task SendMessageAsync(Guid socketId, object eventData)
     {
         WebSocket socket = _sockets[socketId];
+        if (socket == null)
+            return;
+
         string json = JsonSerializer.Serialize(eventData);
         byte[] bytes = Encoding.UTF8.GetBytes(json);
 

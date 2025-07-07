@@ -36,7 +36,7 @@ public class UserCheckupService : BackgroundService
                     foreach (var bot in user.Bots)
                     {
                         Message? lastMessage = await _messageDao.GetLastMessageAsync(user.Id, bot.Id);
-                        if (lastMessage != null && lastMessage.SenderId != bot.Id)
+                        if (lastMessage != null)
                         {
                             TimeSpan time = DateTime.Now - lastMessage.CreatedAt;
                             if (time.TotalMinutes > Random.Shared.Next(_checkupSettings.Value.MaxRandomMinutes))
@@ -51,8 +51,21 @@ public class UserCheckupService : BackgroundService
                                 };
 
                                 Log.Information("User Checkup Service: Sending a check up message to user: " + user.Id);
-                                Message response = await _chatService.CompleteChatAsync(checkupMessage);
+                                Message response = await _chatService.CompleteChatAsync(checkupMessage, user.Id);
                                 await _messageDao.SendMessageAsync(response);
+
+                                // Send to user
+                                EventData<MessageDto> data = new EventData<MessageDto>
+                                {
+                                    Data = new MessageDto
+                                    {
+                                        receivedMessage = null,
+                                        responseMessage = response
+                                    },
+                                    EventName = "message"
+                                };
+
+                                await WebSocketManager.SendMessageAsync(user.Id, data);
                             }
                         }
                     }
