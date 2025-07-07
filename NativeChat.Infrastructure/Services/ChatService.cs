@@ -18,14 +18,16 @@ public class ChatService : IChatService
         _messageDao = messageDao;
     }
 
-    public async Task<Message> CompleteChatAsync(Message message)
+    public async Task<Message> CompleteChatAsync(Message message, Guid? userId = null)
     {
-        Bot? bot = await _botDao.GetBotByIdAsync(message.ReceiverId);
+        Guid botId = (userId != null && userId == message.ReceiverId) ? message.SenderId : message.ReceiverId;
+        Bot? bot = await _botDao.GetBotByIdAsync(botId);
 
         List<Message> previousMessages = await _messageDao.GetAllMessages(message.ReceiverId, message.SenderId);
         previousMessages.Add(message);
         List<ChatMessage> previousMessagesText = [ChatMessage.CreateSystemMessage(_openAISettings.Value.GetSystemMessage(bot!.Language.Name, bot!.Name))];
-        Guid userId = message.SenderId;
+        
+        userId = userId != null ? userId : message.SenderId;
 
         foreach (Message msg in previousMessages)
         {
