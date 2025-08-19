@@ -12,6 +12,10 @@ public partial class Message
     [JsonPropertyName("id")]
     public Guid Id { get; set; }
 
+    [Column("client_id")]
+    [JsonPropertyName("clientId")]
+    public Guid? ClientId { get; set; }
+
     [JsonPropertyName("receiverId")]
     [Column("receiver_id")]
     public Guid ReceiverId { get; set; }
